@@ -10,13 +10,17 @@
     "db:push": "supabase db push",
     "db:pull": "supabase db pull",
     "migration:new": "supabase migration new",
+    "seed:admin": "tsx scripts/seed-admin.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.10"
   },
   "devDependencies": {
+    "@types/node": "^22",
+    "dotenv": "^17.2.1",
     "supabase": "^1.225.1",
+    "tsx": "^4.20.4",
     "typescript": "^5.5"
   }
 }

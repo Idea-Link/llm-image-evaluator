@@ -1,0 +1,201 @@
+{
+  "users": [
+    {
+      "id": "a9125d55-df18-4e26-9376-7e8ddc7da42b",
+      "email": "admin@idealink.tech"
+    }
+  ],
+  "testSets": [
+    {
+      "id": "36c0bfe9-dc2e-43ab-aea5-59a9e373d7a5",
+      "user_id": "a9125d55-df18-4e26-9376-7e8ddc7da42b",
+      "created_at": "2025-08-17T09:01:53.712722+00:00",
+      "name": "Product Images Test Set",
+      "description": "Test set for e-commerce product categorization",
+      "json_extraction_key": "category"
+    },
+    {
+      "id": "7c10b321-5d07-485d-9dc0-f3a22bc62e1b",
+      "user_id": "a9125d55-df18-4e26-9376-7e8ddc7da42b",
+      "created_at": "2025-08-17T09:01:53.712722+00:00",
+      "name": "Medical Images Test Set",
+      "description": "Test set for medical image classification",
+      "json_extraction_key": "diagnosis"
+    }
+  ],
+  "categories": [
+    {
+      "id": "2f8f9bb8-5e6a-42af-8d13-8941e9604870",
+      "test_set_id": "36c0bfe9-dc2e-43ab-aea5-59a9e373d7a5",
+      "name": "Electronics",
+      "description": "Electronic devices and accessories"
+    },
+    {
+      "id": "d123cf41-7cda-49b5-9525-2ed258f35805",
+      "test_set_id": "36c0bfe9-dc2e-43ab-aea5-59a9e373d7a5",
+      "name": "Clothing",
+      "description": "Apparel and fashion items"
+    },
+    {
+      "id": "7b780503-5e14-4900-a27d-0d7e0ebf5112",
+      "test_set_id": "36c0bfe9-dc2e-43ab-aea5-59a9e373d7a5",
+      "name": "Home & Garden",
+      "description": "Home improvement and garden supplies"
+    },
+    {
+      "id": "e73f9596-2a09-4462-a053-fbafc2e74028",
+      "test_set_id": "36c0bfe9-dc2e-43ab-aea5-59a9e373d7a5",
+      "name": "Sports & Outdoors",
+      "description": "Sporting goods and outdoor equipment"
+    },
+    {
+      "id": "a931f2b1-e9a2-4af2-8b58-14930f145f56",
+      "test_set_id": "7c10b321-5d07-485d-9dc0-f3a22bc62e1b",
+      "name": "Normal",
+      "description": "No abnormalities detected"
+    },
+    {
+      "id": "eeacc795-6111-47fe-88dd-360aeaca6381",
+      "test_set_id": "7c10b321-5d07-485d-9dc0-f3a22bc62e1b",
+      "name": "Pneumonia",
+      "description": "Signs of pneumonia present"
+    },
+    {
+      "id": "5044d3f2-2399-48ee-be5d-28f01ed3f2b0",
+      "test_set_id": "7c10b321-5d07-485d-9dc0-f3a22bc62e1b",
+      "name": "Fracture",
+      "description": "Bone fracture detected"
+    },
+    {
+      "id": "c4a8ab70-cf56-49e0-9bba-3255ce0599d9",
+      "test_set_id": "7c10b321-5d07-485d-9dc0-f3a22bc62e1b",
+      "name": "Tumor",
+      "description": "Potential tumor identified"
+    }
+  ],
+  "evaluations": [
+    {
+      "id": "22a43692-87a5-43ec-9adb-1100219027aa",
+      "user_id": "a9125d55-df18-4e26-9376-7e8ddc7da42b",
+      "created_at": "2025-08-17T09:01:53.712722+00:00",
+      "name": "Medical Image Analysis",
+      "status": "queued",
+      "system_prompt": "You are a medical imaging specialist. Analyze the X-ray image and identify any abnormalities.",
+      "model_used": "gpt-4-vision",
+      "test_set_id": "7c10b321-5d07-485d-9dc0-f3a22bc62e1b",
+      "accuracy_score": null
+    },
+    {
+      "id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "user_id": "a9125d55-df18-4e26-9376-7e8ddc7da42b",
+      "created_at": "2025-08-17T09:01:53.712722+00:00",
+      "name": "Product Categorization v1",
+      "status": "completed",
+      "system_prompt": "You are an expert at categorizing product images. Analyze the image and return the most appropriate category.",
+      "model_used": "gpt-4-vision",
+      "test_set_id": "36c0bfe9-dc2e-43ab-aea5-59a9e373d7a5",
+      "accuracy_score": 92.5
+    },
+    {
+      "id": "6d8bc932-9881-4549-b583-a4cb8a321d83",
+      "user_id": "a9125d55-df18-4e26-9376-7e8ddc7da42b",
+      "created_at": "2025-08-17T09:01:53.712722+00:00",
+      "name": "Product Categorization v2",
+      "status": "in_progress",
+      "system_prompt": "You are an AI assistant specialized in e-commerce product classification. Examine the image carefully and determine its category.",
+      "model_used": "claude-3-opus",
+      "test_set_id": "36c0bfe9-dc2e-43ab-aea5-59a9e373d7a5",
+      "accuracy_score": null
+    }
+  ],
+  "results": [
+    {
+      "id": "f879bc03-18e0-42d1-976f-d5536e9ddb4d",
+      "evaluation_id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "input_data": "https://example.com/images/laptop.jpg",
+      "ground_truth_category": "Electronics",
+      "llm_output": "Electronics",
+      "is_match": true
+    },
+    {
+      "id": "7ffbd98a-ff67-4b44-878f-0a0dbd859bb7",
+      "evaluation_id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "input_data": "https://example.com/images/tshirt.jpg",
+      "ground_truth_category": "Clothing",
+      "llm_output": "Clothing",
+      "is_match": true
+    },
+    {
+      "id": "b7bbd04d-c049-4a86-8e10-80e5f0615347",
+      "evaluation_id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "input_data": "https://example.com/images/garden-hose.jpg",
+      "ground_truth_category": "Home & Garden",
+      "llm_output": "Home & Garden",
+      "is_match": true
+    },
+    {
+      "id": "db1887ee-2865-47ed-bace-3726a48cf859",
+      "evaluation_id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "input_data": "https://example.com/images/tennis-racket.jpg",
+      "ground_truth_category": "Sports & Outdoors",
+      "llm_output": "Sports & Outdoors",
+      "is_match": true
+    },
+    {
+      "id": "45197255-782b-4296-8db6-173d93841616",
+      "evaluation_id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "input_data": "https://example.com/images/smartphone.jpg",
+      "ground_truth_category": "Electronics",
+      "llm_output": "Electronics",
+      "is_match": true
+    },
+    {
+      "id": "0452b78e-a152-472f-b362-d64ca4cb68b1",
+      "evaluation_id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "input_data": "https://example.com/images/dress.jpg",
+      "ground_truth_category": "Clothing",
+      "llm_output": "Clothing",
+      "is_match": true
+    },
+    {
+      "id": "6f891713-e85c-4396-8c91-adc2e35c4adc",
+      "evaluation_id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "input_data": "https://example.com/images/lawn-mower.jpg",
+      "ground_truth_category": "Home & Garden",
+      "llm_output": "Sports & Outdoors",
+      "is_match": false
+    },
+    {
+      "id": "5c2e15a0-f478-4632-8306-48ee3c1ffbc0",
+      "evaluation_id": "3f3ee499-fc87-4a14-8013-1b38d06d2a71",
+      "input_data": "https://example.com/images/basketball.jpg",
+      "ground_truth_category": "Sports & Outdoors",
+      "llm_output": "Sports & Outdoors",
+      "is_match": true
+    },
+    {
+      "id": "49fd0ea7-a0af-41ac-9274-fb70b694e4cc",
+      "evaluation_id": "6d8bc932-9881-4549-b583-a4cb8a321d83",
+      "input_data": "https://example.com/images/headphones.jpg",
+      "ground_truth_category": "Electronics",
+      "llm_output": "Electronics",
+      "is_match": true
+    },
+    {
+      "id": "caac1608-1780-47b6-a2c9-a3a37a26b013",
+      "evaluation_id": "6d8bc932-9881-4549-b583-a4cb8a321d83",
+      "input_data": "https://example.com/images/jacket.jpg",
+      "ground_truth_category": "Clothing",
+      "llm_output": "Clothing",
+      "is_match": true
+    },
+    {
+      "id": "dc2d5a14-2af6-4e90-849e-dc096f9754fe",
+      "evaluation_id": "6d8bc932-9881-4549-b583-a4cb8a321d83",
+      "input_data": "https://example.com/images/plant-pot.jpg",
+      "ground_truth_category": "Home & Garden",
+      "llm_output": "Home & Garden",
+      "is_match": true
+    }
+  ]
+}

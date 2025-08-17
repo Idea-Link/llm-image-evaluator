@@ -1,7 +1,9 @@
+import { AuthenticatedLayout } from '@/components/layout/AuthenticatedLayout'
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm">
+    <AuthenticatedLayout>
+      <div className="flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold text-center mb-8">
           Evaluation Platform
         </h1>
@@ -9,6 +11,6 @@ export default function Home() {
           LLM Evaluation Platform for Testing AI Models
         </p>
       </div>
-    </main>
+    </AuthenticatedLayout>
   );
 }
