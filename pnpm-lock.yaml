@@ -36,6 +36,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@evaluation-platform/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@hookform/resolvers':
         specifier: ^5.2.1
         version: 5.2.1(react-hook-form@7.62.0(react@19.1.1))

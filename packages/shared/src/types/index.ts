@@ -10,9 +10,18 @@ export interface TestSet {
   id: string;
   name: string;
   description?: string;
+  json_extraction_key?: string;
+  categories?: GroundTruthCategory[];
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface GroundTruthCategory {
+  id: string;
+  test_set_id: string;
+  name: string;
+  description: string;
 }
 
 export interface Evaluation {
