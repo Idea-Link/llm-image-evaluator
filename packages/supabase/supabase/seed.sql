@@ -5,24 +5,24 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- Create a test user in auth.users if it doesn't exist
--- This is required for the foreign key constraints
+-- Create the admin user in auth.users if it doesn't exist
+-- This is the single admin user for the MVP
+-- Note: In production, credentials should be set via environment variables
 INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at)
 VALUES (
     'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
-    'test@example.com',
-    crypt('password123', gen_salt('bf')),
+    COALESCE(current_setting('app.admin_email', true), 'admin@system.local'),
+    crypt(COALESCE(current_setting('app.admin_password', true), 'admin123'), gen_salt('bf')),
     NOW(),
     NOW(),
     NOW()
 ) ON CONFLICT (id) DO NOTHING;
 
--- Sample user ID (would normally come from auth.users)
--- For local development, you may need to create a test user in auth.users first
--- Using a fixed UUID for consistency in testing
+-- Use the admin user ID for all seed data
+-- This is the single admin user that owns all data in the MVP
 DO $$
 DECLARE 
-    test_user_id UUID := 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+    admin_user_id UUID := 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
     test_set_1_id UUID;
     test_set_2_id UUID;
     evaluation_1_id UUID;
@@ -31,13 +31,13 @@ BEGIN
     -- Insert first test set
     INSERT INTO public.test_sets (id, user_id, name, description, json_extraction_key)
     VALUES 
-        (uuid_generate_v4(), test_user_id, 'Product Images Test Set', 'Test set for e-commerce product categorization', 'category')
+        (uuid_generate_v4(), admin_user_id, 'Product Images Test Set', 'Test set for e-commerce product categorization', 'category')
     RETURNING id INTO test_set_1_id;
     
     -- Insert second test set
     INSERT INTO public.test_sets (id, user_id, name, description, json_extraction_key)
     VALUES 
-        (uuid_generate_v4(), test_user_id, 'Medical Images Test Set', 'Test set for medical image classification', 'diagnosis')
+        (uuid_generate_v4(), admin_user_id, 'Medical Images Test Set', 'Test set for medical image classification', 'diagnosis')
     RETURNING id INTO test_set_2_id;
 
     -- Insert ground truth categories for first test set
@@ -61,7 +61,7 @@ BEGIN
     VALUES 
         (
             uuid_generate_v4(), 
-            test_user_id, 
+            admin_user_id, 
             'Product Categorization v1', 
             'completed',
             'You are an expert at categorizing product images. Analyze the image and return the most appropriate category.',
@@ -76,7 +76,7 @@ BEGIN
     VALUES 
         (
             uuid_generate_v4(),
-            test_user_id,
+            admin_user_id,
             'Product Categorization v2',
             'in_progress',
             'You are an AI assistant specialized in e-commerce product classification. Examine the image carefully and determine its category.',
@@ -91,7 +91,7 @@ BEGIN
     VALUES 
         (
             uuid_generate_v4(),
-            test_user_id,
+            admin_user_id,
             'Medical Image Analysis',
             'queued',
             'You are a medical imaging specialist. Analyze the X-ray image and identify any abnormalities.',
@@ -120,7 +120,7 @@ BEGIN
         (evaluation_2_id, 'https://example.com/images/plant-pot.jpg', 'Home & Garden', 'Home & Garden', true);
 
     RAISE NOTICE 'Seed data inserted successfully';
-    RAISE NOTICE 'Test User ID: %', test_user_id;
+    RAISE NOTICE 'Admin User ID: %', admin_user_id;
     RAISE NOTICE 'Test Set 1 ID: %', test_set_1_id;
     RAISE NOTICE 'Test Set 2 ID: %', test_set_2_id;
     RAISE NOTICE 'Evaluation 1 ID: %', evaluation_1_id;

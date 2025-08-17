@@ -36,7 +36,7 @@ graph TD
         E --> C(Select Test Set);
     end
 
-    A[Login Page] --> B;
+    A[Login Page - Admin Authentication] --> B;
 ```
 
 #### Navigation Structure

@@ -55,5 +55,6 @@
     SUPABASE_SERVICE_ROLE_KEY="your-local-service-role-key"
     
     # Application-specific variables
-    SITE_PASSWORD="your-secret-password-for-mvp"
+    ADMIN_EMAIL="admin@system.local"
+    ADMIN_PASSWORD="your-secure-admin-password"
     ```

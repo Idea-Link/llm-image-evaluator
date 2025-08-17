@@ -34,4 +34,4 @@
     
 5. **NFR5**: If a third-party API fails during a batch run, the system must fail gracefully, halt the process for that specific item, and log the error without crashing the entire batch.
     
-6. **NFR6**: The application must be protected from public access. For the MVP, a simple, single password protection mechanism for the entire site is sufficient.
+6. **NFR6**: The application must be protected from public access. For the MVP, the system will use a single pre-configured admin user account with email/password authentication managed through Supabase Auth.

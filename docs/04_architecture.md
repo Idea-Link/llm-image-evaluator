@@ -428,9 +428,9 @@ components:
         
 4. **Authentication Service**
     
-    - **Responsibility**: Manages user identity, login via the single site-wide password, and session management. It will be the foundation for future role-based access and multi-tenancy.
+    - **Responsibility**: Manages authentication via a single admin user account. The system uses a pre-configured admin user with email/password authentication, providing session management and security without user registration capabilities. This design simplifies the MVP while maintaining compatibility with future multi-user expansion.
         
-    - **Technology**: Supabase Auth.
+    - **Technology**: Supabase Auth (configured for single admin user only).
         
 5. **Database**
     
@@ -602,7 +602,41 @@ CREATE POLICY "Users can only insert their own test sets" ON public.test_sets
 */
 ```
 
-### 9. Frontend Architecture
+### 9. Authentication Architecture
+
+#### Single Admin User Pattern
+
+The platform implements a simplified authentication model optimized for internal tool usage:
+
+- **Authentication Model**: Single pre-configured admin user account
+    - Email: Configured via `ADMIN_EMAIL` environment variable (default: `admin@system.local`)
+    - Password: Configured via `ADMIN_PASSWORD` environment variable
+    - No user registration or multi-user support in MVP
+    
+- **Implementation Details**:
+    - Leverages Supabase Auth with email/password authentication
+    - Public signup disabled in Supabase configuration
+    - Admin user created during initial database migration/seed
+    - All data operations associated with single admin user ID
+    
+- **Session Management**:
+    - Secure session tokens managed by Supabase Auth
+    - Sessions stored in httpOnly cookies
+    - Automatic session refresh handling
+    - Logout functionality to clear sessions
+    
+- **Login Flow**:
+    - Single password field on login page (email pre-configured)
+    - Alternative: Traditional email + password fields with admin email pre-filled
+    - Successful authentication redirects to dashboard
+    - Failed authentication shows error message
+    
+- **Future Migration Path**:
+    - Database schema already supports multiple users
+    - Easy to enable registration and multi-tenancy later
+    - No breaking changes required for multi-user upgrade
+
+### 10. Frontend Architecture
 
 #### Component Architecture
 
@@ -789,7 +823,8 @@ Plaintext
     SUPABASE_SERVICE_ROLE_KEY="your-local-service-role-key"
     
     # Application-specific variables
-    SITE_PASSWORD="your-secret-password-for-mvp"
+    ADMIN_EMAIL="admin@system.local"
+    ADMIN_PASSWORD="your-secure-admin-password"
     ```
 
 ### 12. Deployment Architecture
@@ -893,7 +928,7 @@ Our security strategy relies on the robust, enterprise-grade features provided b
     
     - **Session Management**: Handled entirely by Supabase Auth, which provides a secure, battle-tested system.
         
-    - **Password Policy**: The single site-wide password for the MVP will be stored as a secure secret/environment variable, never in the code.
+    - **Single Admin User**: The system uses a single pre-configured admin user account. The admin password is stored as a secure environment variable and managed through Supabase Auth's built-in security features.
         
 
 #### Performance Optimization

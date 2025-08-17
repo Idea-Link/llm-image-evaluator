@@ -56,8 +56,28 @@ CREATE TABLE public.evaluation_results (
 -- Add index for performance
 CREATE INDEX ON public.evaluation_results (evaluation_id);
 
--- Example Row Level Security (RLS) Policies for Multi-Tenancy
--- These policies ensure users can only access their own data.
+-- Admin User Setup
+-- Create the single admin user for the MVP
+-- Note: In production, the password should be set via environment variable
+DO $$
+DECLARE 
+    admin_user_id UUID := 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+BEGIN
+    -- Create admin user if it doesn't exist
+    INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at)
+    VALUES (
+        admin_user_id,
+        COALESCE(current_setting('app.admin_email', true), 'admin@system.local'),
+        crypt(current_setting('app.admin_password', true), gen_salt('bf')),
+        NOW(),
+        NOW(),
+        NOW()
+    ) ON CONFLICT (id) DO NOTHING;
+END $$;
+
+-- Note: Row Level Security (RLS) is commented out for MVP
+-- Since we're using a single admin user, RLS is not required
+-- These policies can be enabled when migrating to multi-user support
 /*
 -- Enable RLS on all tables
 ALTER TABLE public.test_sets ENABLE ROW LEVEL SECURITY;

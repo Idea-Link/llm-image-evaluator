@@ -22,7 +22,9 @@ Our security strategy relies on the robust, enterprise-grade features provided b
     
     - **Session Management**: Handled entirely by Supabase Auth, which provides a secure, battle-tested system.
         
-    - **Password Policy**: The single site-wide password for the MVP will be stored as a secure secret/environment variable, never in the code.
+    - **Single Admin User**: The system uses a single pre-configured admin user account. The admin password is stored as a secure environment variable and managed through Supabase Auth's built-in security features.
+        
+    - **No Public Access**: Public user registration is disabled, ensuring only the authorized admin can access the system.
         
 
 ## Performance Optimization

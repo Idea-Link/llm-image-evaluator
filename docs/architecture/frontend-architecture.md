@@ -49,7 +49,7 @@
 
 - **Framework**: We will use the standard **Next.js App Router**. Routes will be defined by folders within the `src/app/` directory. For example, the page for a specific evaluation result will be located at `src/app/evaluations/[id]/page.tsx`.
     
-- **Protected Routes**: All routes, except for the login page, will be protected. This will be enforced using a single `src/middleware.ts` file that checks for a valid session cookie and redirects unauthenticated users to the login page.
+- **Protected Routes**: All routes, except for the login page, will be protected. This will be enforced using a single `src/middleware.ts` file that checks for a valid Supabase Auth session and redirects unauthenticated users to the login page. The middleware validates against the single admin user session.
     
 
 ## Frontend Services Layer (API Integration)

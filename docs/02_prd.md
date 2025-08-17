@@ -52,7 +52,7 @@ The current process for prompt engineering is a manual, slow, and unscalable bot
     
 5. **NFR5**: If a third-party API fails during a batch run, the system must fail gracefully, halt the process for that specific item, and log the error without crashing the entire batch.
     
-6. **NFR6**: The application must be protected from public access. For the MVP, a simple, single password protection mechanism for the entire site is sufficient.
+6. **NFR6**: The application must be protected from public access. For the MVP, the system will use a single pre-configured admin user account with email/password authentication managed through Supabase Auth.
 
 
 ### 3. User Interface Design Goals
@@ -78,7 +78,7 @@ The core workflow will be built around a few key interaction patterns:
 
 From a product perspective, the MVP will require the following core screens:
 
-- **Login Page**: A simple, site-wide password entry screen.
+- **Login Page**: A simple authentication screen for the admin user, with email and password fields (email can be pre-filled or hidden).
     
 - **Dashboard**: A list view of all past and current evaluations, showing their status.
     
@@ -125,7 +125,7 @@ From a product perspective, the MVP will require the following core screens:
 
 ### 5. Epic List
 
--  **Epic 1: Project Foundation & Secure Access**: Establish the full-stack monorepo with the core **Next.js application, the local Supabase environment, the placeholder AWS Lambda**, and implement site-wide password protection.
+-  **Epic 1: Project Foundation & Secure Access**: Establish the full-stack monorepo with the core **Next.js application, the local Supabase environment, the placeholder AWS Lambda**, and implement single admin user authentication.
     
 - **Epic 2: Test Set Management**: Implement the core functionality for users to create, view, edit, and delete reusable Test Sets (the combination of inputs and ground truth criteria).
     
@@ -133,13 +133,13 @@ From a product perspective, the MVP will require the following core screens:
 
 ### 6. Epic 1: Project Foundation & Secure Access
 
-**Epic Goal**: The objective of this epic is to establish a secure, deployable, full-stack application skeleton. By the end of this epic, we will have a configured monorepo, a connected database, and a live, password-protected web application with a basic layout, ready for core feature development in subsequent epics.
+**Epic Goal**: The objective of this epic is to establish a secure, deployable, full-stack application skeleton. By the end of this epic, we will have a configured monorepo, a connected database, and a live web application protected by single admin user authentication with a basic layout, ready for core feature development in subsequent epics.
 
 ---
 
 ####  Epic 1: Project Foundation & Secure Access (Revised)
 
-**Epic Goal**: The objective of this epic is to establish a secure, deployable, full-stack application skeleton based on our hybrid architecture. By the end of this epic, we will have a configured monorepo, a Next.js application, a local Supabase environment with an applied database schema, a placeholder AWS Lambda package, and a live, password-protected web application.
+**Epic Goal**: The objective of this epic is to establish a secure, deployable, full-stack application skeleton based on our hybrid architecture. By the end of this epic, we will have a configured monorepo, a Next.js application, a local Supabase environment with an applied database schema including admin user setup, a placeholder AWS Lambda package, and a live web application with single admin user authentication.
 
 ---
 
@@ -181,21 +181,25 @@ From a product perspective, the MVP will require the following core screens:
 
 ---
 
-#### Story 1.3: Simple Password Protection
+#### Story 1.3: Single Admin User Authentication
 
-**As a** project administrator, **I want** the entire Next.js application to be protected by a single, simple password, **so that** the internal tool is not publicly accessible.
+**As a** project administrator, **I want** the entire Next.js application to be protected by a single admin user account, **so that** the internal tool is not publicly accessible and leverages Supabase Auth's security features.
 
 **Acceptance Criteria**
 
-1. Accessing any page of the application prompts for a password if the user is not authenticated.
+1. Accessing any page of the application redirects to a login page if the user is not authenticated.
     
-2. A correct password, stored as a server-side environment variable, grants access and establishes a session (e.g., via a secure cookie).
+2. The login page displays email and password fields (email can be pre-filled with admin email).
     
-3. An incorrect password denies access and shows an error message.
+3. Correct admin credentials (stored as environment variables) authenticate via Supabase Auth and establish a secure session.
     
-4. Once authenticated, the user can navigate between pages without being prompted for the password again.
+4. Incorrect credentials deny access and show an appropriate error message.
     
-5. A minimal, unstyled login form is implemented to capture the password.
+5. Once authenticated, the admin can navigate between pages without being prompted for credentials again.
+    
+6. A logout option is available to end the session.
+    
+7. The admin user is created during database initialization using the configured environment variables.
     
 
 ---

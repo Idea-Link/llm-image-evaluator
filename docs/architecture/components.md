@@ -22,9 +22,9 @@
         
 4. **Authentication Service**
     
-    - **Responsibility**: Manages user identity, login via the single site-wide password, and session management. It will be the foundation for future role-based access and multi-tenancy.
+    - **Responsibility**: Manages authentication via a single admin user account. The system uses a pre-configured admin user with email/password authentication, providing session management and security without user registration capabilities. This design simplifies the MVP while maintaining compatibility with future multi-user expansion.
         
-    - **Technology**: Supabase Auth.
+    - **Technology**: Supabase Auth (configured for single admin user only).
         
 5. **Database**
     

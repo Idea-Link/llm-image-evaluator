@@ -21,7 +21,7 @@ The core workflow will be built around a few key interaction patterns:
 
 From a product perspective, the MVP will require the following core screens:
 
-- **Login Page**: A simple, site-wide password entry screen.
+- **Login Page**: A simple authentication screen for the admin user, with email and password fields (email can be pre-filled or hidden).
     
 - **Dashboard**: A list view of all past and current evaluations, showing their status.
     

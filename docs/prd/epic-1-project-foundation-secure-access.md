@@ -1,12 +1,12 @@
 # 6. Epic 1: Project Foundation & Secure Access
 
-**Epic Goal**: The objective of this epic is to establish a secure, deployable, full-stack application skeleton. By the end of this epic, we will have a configured monorepo, a connected database, and a live, password-protected web application with a basic layout, ready for core feature development in subsequent epics.
+**Epic Goal**: The objective of this epic is to establish a secure, deployable, full-stack application skeleton. By the end of this epic, we will have a configured monorepo, a connected database, and a live web application protected by single admin user authentication with a basic layout, ready for core feature development in subsequent epics.
 
 ---
 
 ##  Epic 1: Project Foundation & Secure Access (Revised)
 
-**Epic Goal**: The objective of this epic is to establish a secure, deployable, full-stack application skeleton based on our hybrid architecture. By the end of this epic, we will have a configured monorepo, a Next.js application, a local Supabase environment with an applied database schema, a placeholder AWS Lambda package, and a live, password-protected web application.
+**Epic Goal**: The objective of this epic is to establish a secure, deployable, full-stack application skeleton based on our hybrid architecture. By the end of this epic, we will have a configured monorepo, a Next.js application, a local Supabase environment with an applied database schema including admin user setup, a placeholder AWS Lambda package, and a live web application with single admin user authentication.
 
 ---
 
@@ -48,21 +48,25 @@
 
 ---
 
-## Story 1.3: Simple Password Protection
+## Story 1.3: Single Admin User Authentication
 
-**As a** project administrator, **I want** the entire Next.js application to be protected by a single, simple password, **so that** the internal tool is not publicly accessible.
+**As a** project administrator, **I want** the entire Next.js application to be protected by a single admin user account, **so that** the internal tool is not publicly accessible and leverages Supabase Auth's security features.
 
 **Acceptance Criteria**
 
-1. Accessing any page of the application prompts for a password if the user is not authenticated.
+1. Accessing any page of the application redirects to a login page if the user is not authenticated.
     
-2. A correct password, stored as a server-side environment variable, grants access and establishes a session (e.g., via a secure cookie).
+2. The login page displays email and password fields (email can be pre-filled with admin email).
     
-3. An incorrect password denies access and shows an error message.
+3. Correct admin credentials (stored as environment variables) authenticate via Supabase Auth and establish a secure session.
     
-4. Once authenticated, the user can navigate between pages without being prompted for the password again.
+4. Incorrect credentials deny access and show an appropriate error message.
     
-5. A minimal, unstyled login form is implemented to capture the password.
+5. Once authenticated, the admin can navigate between pages without being prompted for credentials again.
+    
+6. A logout option is available to end the session.
+    
+7. The admin user is created during database initialization using the configured environment variables.
     
 
 ---
