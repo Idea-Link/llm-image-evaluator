@@ -1,0 +1,82 @@
+
+MANUAL TESTING INSTRUCTIONS FOR TEST SET FORM
+==============================================
+
+To complete the full test after login:
+
+1. LOGIN PROCESS:
+   - Navigate to: http://localhost:3001/test-sets/new
+   - You'll be redirected to the login page
+   - Enter valid admin credentials
+   - Click "Sign In"
+
+2. FORM TESTING (After successful login):
+   
+   a) INITIAL FORM STATE:
+      - Verify page title shows "Create New Test Set"
+      - Check that Name field is present and required (marked with *)
+      - Check that Description field is present (optional)
+      - Verify "Ground Truth Categories" section exists
+      - Confirm one empty category row is shown by default
+      - Verify "Create Test Set" and "Cancel" buttons are present
+
+   b) FILL FORM WITH TEST DATA:
+      - Name: "Test Set QA Review"
+      - Description: "Testing story 2.2 implementation"
+      - Category 1 Name: "Excellent"
+      - Category 1 Description: "Outstanding quality, exceeds expectations"
+
+   c) TEST ADD CATEGORY FUNCTIONALITY:
+      - Click "Add Category" button
+      - Verify a second category row appears
+      - Fill Category 2 Name: "Good"
+      - Fill Category 2 Description: "Meets requirements, good quality"
+      - Click "Add Category" again to add a third category
+      - Fill Category 3 Name: "Poor"
+      - Fill Category 3 Description: "Below expectations, needs improvement"
+
+   d) TEST REMOVE CATEGORY FUNCTIONALITY:
+      - Look for trash/delete icons next to each category (except if only one remains)
+      - Click the delete button for the last category
+      - Verify the category is removed
+      - Confirm that at least one category always remains
+
+   e) TEST FORM VALIDATION:
+      - Clear the Name field
+      - Try to submit the form
+      - Verify error message appears: "Name is required"
+      - Clear all category fields
+      - Try to submit
+      - Verify error message about categories being required
+      - Fill Name but leave a category with only name or only description
+      - Verify validation requires both name and description for each category
+
+   f) TEST FINAL SUBMISSION:
+      - Fill all required fields with valid data
+      - Click "Create Test Set"
+      - Verify success toast/message appears
+      - Confirm navigation to test sets list page
+
+   g) TEST CANCEL FUNCTIONALITY:
+      - Return to the form page
+      - Fill some data
+      - Click "Cancel" button
+      - Verify navigation back to test sets list without saving
+
+3. EXPECTED UI BEHAVIOR:
+   - Form should be responsive and well-styled
+   - Input fields should have proper focus states
+   - Validation messages should appear near relevant fields
+   - Loading states should show during submission
+   - Toast notifications should appear for success/error states
+   - Category management should be intuitive with clear add/remove actions
+
+4. SCREENSHOT LOCATIONS:
+   Take screenshots at each major step and save them for review.
+
+5. REPORT ANY ISSUES:
+   - UI/UX problems
+   - Validation not working correctly
+   - Form submission failures
+   - Navigation issues
+   - Any unexpected behavior

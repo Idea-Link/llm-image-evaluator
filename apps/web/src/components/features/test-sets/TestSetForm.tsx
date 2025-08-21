@@ -1,29 +1,48 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { CategoryListEditor } from './CategoryListEditor';
-import { GroundTruthCategory } from '@evaluation-platform/shared';
+import { TestSet, GroundTruthCategory } from '@evaluation-platform/shared';
+import { useTestSetStore } from '@/stores/useTestSetStore';
+import { useToast } from '@/hooks/use-toast';
 
 interface TestSetFormProps {
-  onSubmit: (
+  testSet?: TestSet;
+  mode?: 'create' | 'edit';
+  onSubmit?: (
     name: string,
     description: string,
     categories: Omit<GroundTruthCategory, 'id' | 'test_set_id'>[]
   ) => Promise<void>;
-  onCancel: () => void;
+  onCancel?: () => void;
   isSubmitting?: boolean;
 }
 
-export function TestSetForm({ onSubmit, onCancel, isSubmitting = false }: TestSetFormProps) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [categories, setCategories] = useState<Omit<GroundTruthCategory, 'id' | 'test_set_id'>[]>([
-    { name: '', description: '' }
-  ]);
+export function TestSetForm({ 
+  testSet, 
+  mode = 'create',
+  onSubmit,
+  onCancel,
+  isSubmitting: externalIsSubmitting = false 
+}: TestSetFormProps) {
+  const router = useRouter();
+  const { toast } = useToast();
+  const { createTestSet, updateTestSet } = useTestSetStore();
+  
+  const [name, setName] = useState(testSet?.name || '');
+  const [description, setDescription] = useState(testSet?.description || '');
+  const [categories, setCategories] = useState<Omit<GroundTruthCategory, 'id' | 'test_set_id'>[]>(
+    testSet?.categories?.map(cat => ({ 
+      name: cat.name, 
+      description: cat.description 
+    })) || [{ name: '', description: '' }]
+  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{
     name?: string;
     categories?: string;
@@ -67,8 +86,65 @@ export function TestSetForm({ onSubmit, onCancel, isSubmitting = false }: TestSe
       cat => cat.name.trim() && cat.description.trim()
     );
 
-    await onSubmit(name, description, validCategories);
+    if (onSubmit) {
+      await onSubmit(name, description, validCategories);
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const formData = {
+        name,
+        description,
+        json_extraction_key: undefined
+      };
+      
+      if (mode === 'edit' && testSet) {
+        await updateTestSet(testSet.id, formData, validCategories);
+        toast({
+          title: 'Success',
+          description: 'Test set updated successfully',
+        });
+      } else {
+        await createTestSet(formData, validCategories);
+        toast({
+          title: 'Success',
+          description: 'Test set created successfully',
+        });
+      }
+      
+      router.push('/test-sets');
+    } catch {
+      toast({
+        title: 'Error',
+        description: mode === 'edit' 
+          ? 'Failed to update test set' 
+          : 'Failed to create test set',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const handleCancelClick = () => {
+    if (onCancel) {
+      onCancel();
+    } else {
+      router.push('/test-sets');
+    }
+  };
+
+  const submitButtonText = () => {
+    const submitting = isSubmitting || externalIsSubmitting;
+    if (submitting) {
+      return mode === 'edit' ? 'Updating...' : 'Creating...';
+    }
+    return mode === 'edit' ? 'Update Test Set' : 'Create Test Set';
+  };
+
+  const isDisabled = isSubmitting || externalIsSubmitting;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -87,7 +163,7 @@ export function TestSetForm({ onSubmit, onCancel, isSubmitting = false }: TestSe
               setErrors({ ...errors, name: undefined });
             }
           }}
-          disabled={isSubmitting}
+          disabled={isDisabled}
           className={errors.name ? 'border-destructive' : ''}
         />
         {errors.name && (
@@ -102,7 +178,7 @@ export function TestSetForm({ onSubmit, onCancel, isSubmitting = false }: TestSe
           placeholder="Enter test set description (optional)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          disabled={isSubmitting}
+          disabled={isDisabled}
           rows={3}
         />
       </div>
@@ -119,7 +195,7 @@ export function TestSetForm({ onSubmit, onCancel, isSubmitting = false }: TestSe
               setErrors({ ...errors, categories: undefined });
             }
           }}
-          disabled={isSubmitting}
+          disabled={isDisabled}
         />
         {errors.categories && (
           <p className="text-sm text-destructive">{errors.categories}</p>
@@ -130,16 +206,16 @@ export function TestSetForm({ onSubmit, onCancel, isSubmitting = false }: TestSe
         <Button
           type="button"
           variant="outline"
-          onClick={onCancel}
-          disabled={isSubmitting}
+          onClick={handleCancelClick}
+          disabled={isDisabled}
         >
           Cancel
         </Button>
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isDisabled}
         >
-          {isSubmitting ? 'Creating...' : 'Create Test Set'}
+          {submitButtonText()}
         </Button>
       </div>
     </form>
